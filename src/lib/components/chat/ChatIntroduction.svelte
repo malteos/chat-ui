@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { PUBLIC_APP_NAME, PUBLIC_VERSION } from "$env/static/public";
+	import { PUBLIC_APP_NAME, PUBLIC_VERSION, PUBLIC_APP_SUBTITLE } from "$env/static/public";
 	import { PUBLIC_ANNOUNCEMENT_BANNERS } from "$env/static/public";
 	import Logo from "$lib/components/icons/Logo.svelte";
 	import { createEventDispatcher } from "svelte";
@@ -40,7 +40,7 @@
 				</div>
 			</div>
 			<p class="text-base text-gray-600 dark:text-gray-400">
-				Making the community's best AI chat models available to everyone.
+				{PUBLIC_APP_SUBTITLE}
 			</p>
 		</div>
 	</div>
