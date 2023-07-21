@@ -60,7 +60,7 @@ export async function POST({ request, fetch, locals, params }) {
 	const json = await request.json();
 	const {
 		inputs: newPrompt,
-		options: { id: messageId, is_retry, web_search_id, response_id: responseId },
+		options: { id: messageId, is_retry, web_search_id, response_id: responseId, use_wiki_search },
 	} = z
 		.object({
 			inputs: z.string().trim().min(1),
@@ -69,6 +69,7 @@ export async function POST({ request, fetch, locals, params }) {
 				response_id: z.optional(z.string().uuid()),
 				is_retry: z.optional(z.boolean()),
 				web_search_id: z.ostring(),
+				use_wiki_search: z.optional(z.boolean()),
 			}),
 		})
 		.parse(json);
@@ -96,7 +97,7 @@ export async function POST({ request, fetch, locals, params }) {
 		];
 	})() satisfies Message[];
 
-	const prompt = await buildPrompt(messages, model, web_search_id);
+	const prompt = await buildPrompt(messages, model, web_search_id, use_wiki_search);
 	const randomEndpoint = modelEndpoint(model);
 
 	const abortController = new AbortController();

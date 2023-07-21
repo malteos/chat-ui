@@ -13,6 +13,7 @@
 	import { randomUUID } from "$lib/utils/randomUuid";
 	import { findCurrentModel } from "$lib/utils/models";
 	import { webSearchParameters } from "$lib/stores/webSearchParameters";
+	import { wikiSearchParameters } from "$lib/stores/wikiSearchParameters";
 	import type { WebSearchMessage } from "$lib/types/WebSearch";
 	import type { Message } from "$lib/types/Message";
 	import { PUBLIC_APP_DISCLAIMER } from "$env/static/public";
@@ -39,7 +40,8 @@
 		inputs: string,
 		messageId: string,
 		isRetry = false,
-		webSearchId?: string
+		webSearchId?: string,
+		useWikiSearch: boolean = false,
 	) {
 		let conversationId = $page.params.id;
 		const responseId = randomUUID();
@@ -59,6 +61,7 @@
 				is_retry: isRetry,
 				use_cache: false,
 				web_search_id: webSearchId,
+				use_wiki_search: useWikiSearch,
 			} as Options
 		);
 
@@ -192,8 +195,14 @@
 						});
 				}
 			}
+			// Handle WikiSearch
+			let useWikiSearch: boolean | null = false;
+			if ($wikiSearchParameters.useSearch) {
+				console.log("wikiSearch", messages);
+				useWikiSearch = true;
+			}
 
-			await getTextGenerationStream(message, messageId, isRetry, searchResponseId ?? undefined);
+			await getTextGenerationStream(message, messageId, isRetry, searchResponseId ?? undefined, useWikiSearch);
 
 			webSearchMessages = [];
 

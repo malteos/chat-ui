@@ -1,0 +1,18 @@
+@font-face {
+    font-family: 'Fira Sans';
+    src: url(https://www.dfki.de/typo3conf/ext/wftmpl_dfki/Resources/Public/Fonts/fira-sans-v8-latin-regular.woff2);
+  }
+  
+
+.text-2xl {
+    border-image: linear-gradient(to right, #F39511, transparent) 100% 1;
+    color: #194C7A;
+    /* color: rgb(107, 114, 128); */
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-top: 0;
+}
+
+body {
+    font-family: 'Fira Sans', Arial;
+}

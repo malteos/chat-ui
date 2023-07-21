@@ -4,7 +4,7 @@
 
 	import Logo from "$lib/components/icons/Logo.svelte";
 	import { switchTheme } from "$lib/switchTheme";
-	import { PUBLIC_APP_NAME, PUBLIC_ORIGIN } from "$env/static/public";
+	import { PUBLIC_APP_NAME, PUBLIC_ORIGIN, PUBLIC_APP_ASSETS } from "$env/static/public";
 	import NavConversationItem from "./NavConversationItem.svelte";
 	import type { LayoutData } from "../../routes/$types";
 
@@ -23,8 +23,16 @@
 
 <div class="sticky top-0 flex flex-none items-center justify-between px-3 py-3.5 max-sm:pt-0">
 	<a class="flex items-center rounded-xl text-lg font-semibold" href="{PUBLIC_ORIGIN}{base}/">
-		<Logo classNames="mr-1" />
-		{PUBLIC_APP_NAME}
+		{#if PUBLIC_APP_ASSETS === "dfki"}
+		<img
+			alt=""
+			src="{PUBLIC_ORIGIN}{base}/{PUBLIC_APP_ASSETS}/dfki-logo.png"
+			style="height: 30px"
+		/>
+		{:else}
+			<Logo classNames="mr-1" />
+			{PUBLIC_APP_NAME}
+		{/if}
 	</a>
 	<a
 		href={`${base}/`}

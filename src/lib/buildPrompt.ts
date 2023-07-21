@@ -2,6 +2,7 @@ import type { BackendModel } from "./server/models";
 import type { Message } from "./types/Message";
 import { collections } from "$lib/server/database";
 import { ObjectId } from "mongodb";
+import { searchWiki } from "$lib/server/wikisearch/searchWiki";
 /**
  * Convert [{user: "assistant", content: "hi"}, {user: "user", content: "hello"}] to:
  *
@@ -11,7 +12,8 @@ import { ObjectId } from "mongodb";
 export async function buildPrompt(
 	messages: Pick<Message, "from" | "content">[],
 	model: BackendModel,
-	webSearchId?: string
+	webSearchId?: string,
+	useWikiSearch: boolean = false
 ): Promise<string> {
 	const prompt =
 		messages
@@ -44,13 +46,31 @@ export async function buildPrompt(
 				model.messageEndToken;
 		}
 	}
+
+	let wikiPrompt = "";
+	if (useWikiSearch) {
+		const wikiContent = await searchWiki(messages);
+
+		if(wikiContent) {
+			wikiPrompt =
+			model.assistantMessageToken +
+			`Bei der Suche im Internet wurde folgende Informationen gefunden: ${wikiContent}` +
+			model.messageEndToken;
+		}
+	}
+
 	const finalPrompt =
 		model.preprompt +
 		webPrompt +
+		wikiPrompt +
 		prompt
 			.split(" ")
 			.slice(-(model.parameters?.truncate ?? 0))
 			.join(" ");
+
+	if(useWikiSearch) {
+		console.log("finalPrompt with use_wiki_search = ", finalPrompt);
+	}
 
 	// Not super precise, but it's truncated in the model's backend anyway
 	return finalPrompt;
