@@ -26,8 +26,8 @@
 		{#if PUBLIC_APP_ASSETS === "dfki"}
 		<img
 			alt=""
-			src="{PUBLIC_ORIGIN}{base}/{PUBLIC_APP_ASSETS}/dfki-logo.png"
-			style="height: 30px"
+			src="{PUBLIC_ORIGIN}{base}/{PUBLIC_APP_ASSETS}/dfki-opengptx-logo.png"
+			style="height: 40px"
 		/>
 		{:else}
 			<Logo classNames="mr-1" />
